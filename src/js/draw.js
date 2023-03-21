@@ -2,10 +2,16 @@
 const slider_rx = document.getElementById("rxField");
 const slider_ry = document.getElementById("ryField");
 const slider_rz = document.getElementById("rzField");
+const slider_sx = document.getElementById("sxField");
+const slider_sy = document.getElementById("syField");
+const slider_sz = document.getElementById("szField");
 
 var rx = 0.28;
 var ry = -0.33;
 var rz = 0.0;
+var sx = 1;
+var sy = 1;
+var sz = 1;
 
 main();
 
@@ -19,6 +25,18 @@ slider_ry.oninput = function () {
 
 slider_rz.oninput = function () {
   rz = (this.value / 180) * Math.PI;
+};
+
+slider_sx.oninput = function () {
+  sx = this.value;
+};
+
+slider_sy.oninput = function () {
+  sy = this.value;
+};
+
+slider_sz.oninput = function () {
+  sz = this.value;
 };
 
 function main() {
@@ -64,14 +82,52 @@ function main() {
   // FUNGSI LOAD BELUM KELAR
   // SEMENTARA UBAH AJA VERTICES & INDICES UNTUK TES MODEL KALIAN
   const vertices = [
-    -1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0, 1.0, 1.0, -1.0, 1.0, 1.0, -1.0, -1.0,
-    -1.0, 1.0, -1.0, -1.0, 1.0, 1.0, -1.0, -1.0, 1.0, -1.0,
-  ];
+    // Front face
+    -1.0, -1.0,  1.0,
+     1.0, -1.0,  1.0,
+     1.0,  1.0,  1.0,
+    -1.0,  1.0,  1.0,
 
-  const indices = [
-    0, 1, 2, 0, 2, 3, 1, 5, 6, 1, 6, 2, 5, 4, 7, 5, 7, 6, 4, 0, 3, 4, 3, 7, 3,
-    2, 6, 3, 6, 7, 4, 5, 1, 4, 1, 0,
-  ];
+    // Back face
+    -1.0, -1.0, -1.0,
+    -1.0,  1.0, -1.0,
+     1.0,  1.0, -1.0,
+     1.0, -1.0, -1.0,
+
+    // Top face
+    -1.0,  1.0, -1.0,
+    -1.0,  1.0,  1.0,
+     1.0,  1.0,  1.0,
+     1.0,  1.0, -1.0,
+
+    // Bottom face
+    -1.0, -1.0, -1.0,
+     1.0, -1.0, -1.0,
+     1.0, -1.0,  1.0,
+    -1.0, -1.0,  1.0,
+
+    // Right face
+     1.0, -1.0, -1.0,
+     1.0,  1.0, -1.0,
+     1.0,  1.0,  1.0,
+     1.0, -1.0,  1.0,
+
+    // Left face
+    -1.0, -1.0, -1.0,
+    -1.0, -1.0,  1.0,
+    -1.0,  1.0,  1.0,
+    -1.0,  1.0, -1.0
+];
+
+// Define the indices for each triangle
+const indices = [
+    0,  1,  2,      0,  2,  3,    // Front face
+    4,  5,  6,      4,  6,  7,    // Back face
+    8,  9,  10,     8,  10, 11,   // Top face
+    12, 13, 14,     12, 14, 15,   // Bottom face
+    16, 17, 18,     16, 18, 19,   // Right face
+    20, 21, 22,     20, 22, 23    // Left face
+];
 
   const model = loadObject(gl, vertices, indices);
   const { mat4 } = glMatrix;
@@ -87,7 +143,7 @@ function main() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     // PROJECTION -> TAR GANTI BUATAN KITA
-    const projectionMatrix = mat4.create();
+    const projectionMatrix = m4();
     mat4.perspective(
       projectionMatrix,
       camera.fieldOfView,
@@ -106,7 +162,7 @@ function drawObject(gl, program, model, projectionMatrix) {
   gl.useProgram(program);
 
   const { mat4 } = glMatrix;
-  const modelViewMatrix = mat4.create();
+  const modelViewMatrix = m4();
 
   // ROTASI -> TAR GANTI BUATAN KITA
   mat4.rotateX(modelViewMatrix, modelViewMatrix, rx);
@@ -123,8 +179,11 @@ function drawObject(gl, program, model, projectionMatrix) {
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, model.indices);
 
   // SCALING -> TAR GANTI BUATAN KITA
+  // BELUM TEREALISASI
+  scale(modelViewMatrix, rx,ry,rz)
   const uScale = gl.getUniformLocation(program, "uScale");
-  gl.uniform4fv(uScale, [1.0, 1.0, 1.0, 1.0]);
+  gl.uniform4fv(uScale, [sx, sy, sz, 1.0]);
+
 
   // COLOR
   const uVertexColor = gl.getUniformLocation(program, "uVertexColor");
