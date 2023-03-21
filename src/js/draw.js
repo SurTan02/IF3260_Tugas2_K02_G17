@@ -55,10 +55,11 @@ function main() {
   varying lowp vec4 vColor;
 
   void main() {
-      vec4 newVertexPosition = uScale * aVertexPosition;
-      gl_Position = uProjectionMatrix * uModelViewMatrix * newVertexPosition;
+
+      gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
       vColor = uVertexColor;
   }
+
 `;
   const fragmentShaderSource = `
   varying lowp vec4 vColor;
@@ -162,12 +163,13 @@ function drawObject(gl, program, model, projectionMatrix) {
   gl.useProgram(program);
 
   const { mat4 } = glMatrix;
-  const modelViewMatrix = m4();
+  var modelViewMatrix = m4();
 
   // ROTASI -> TAR GANTI BUATAN KITA
   mat4.rotateX(modelViewMatrix, modelViewMatrix, rx);
   mat4.rotateY(modelViewMatrix, modelViewMatrix, ry);
   mat4.rotateZ(modelViewMatrix, modelViewMatrix, rz);
+  modelViewMatrix = scale(modelViewMatrix, sx,sy,sz)
 
   {
     const vertexPosition = gl.getAttribLocation(program, "aVertexPosition");
@@ -180,7 +182,6 @@ function drawObject(gl, program, model, projectionMatrix) {
 
   // SCALING -> TAR GANTI BUATAN KITA
   // BELUM TEREALISASI
-  scale(modelViewMatrix, rx,ry,rz)
   const uScale = gl.getUniformLocation(program, "uScale");
   gl.uniform4fv(uScale, [sx, sy, sz, 1.0]);
 
