@@ -142,17 +142,14 @@ function main(jsonObj) {
 function drawObject(gl, program, model, projectionMatrix) {
 	gl.useProgram(program);
 
-	const { mat4 } = glMatrix;
 	var modelViewMatrix = m4();
 
 	// SCALING
 	modelViewMatrix = scale(modelViewMatrix, sx, sy, sz);
-	// ROTASI -> TAR GANTI BUATAN KITA
-
-	projectionMatrix = rotationX(projectionMatrix, projectionMatrix, rx);
-	mat4.rotateY(projectionMatrix, projectionMatrix, ry);
-	mat4.rotateZ(projectionMatrix, projectionMatrix, rz);
-	// console.log(modelViewMatrix)
+	// ROTASI
+	projectionMatrix = rotationX(projectionMatrix, rx);
+	projectionMatrix = rotationY(projectionMatrix, ry);
+	projectionMatrix = rotationZ(projectionMatrix, rz);
 
 	{
 		const vertexPosition = gl.getAttribLocation(program, "aVertexPosition");
