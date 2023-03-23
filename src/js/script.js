@@ -13,7 +13,7 @@ var rz = 0;
 var sx = 1;
 var sy = 1;
 var sz = 1;
-var zc = 45;
+var zc = 90;
 
 slider_sx.value = sx;
 slider_sy.value = sy;

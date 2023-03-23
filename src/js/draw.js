@@ -1,135 +1,61 @@
 const jsonObj = {
-  "vertices": [
-    0, 2, 0,
-  
-    -1.0, 0, 0,  
-    -0.9, 0, 0, 
-    0, 1.8, 0,  
-    1.0, 0, 0,  
-    0.9, 0, 0, 
-  
-    1.0, 0, 0.1, 
-    0, 2, 0.1, 
-      
-    0, 1.8, 0,
-    0, 1.8, 2,
-    0, 2, 2,
-  
-    -1.0, 0, 2,  
-    -0.9, 0, 2, 
-    0, 1.8, 2,    
-    1.0, 0, 2,  
-    0.9, 0, 2, 
-  
-    1.0, 0, 2, 
-    0, 2, 2, 
-  
-    -1.0, 0, 0.1, 
-    0, 2, 0.1, 
-    
-    -1.0, 0, 2, 
-    -1.0, 0, 2, 
-  
-    -0.9, 0, 2,
-    0.9, 0, 2, 
-  
-    -0.95, 0.1, 0,  
-    0.95, 0.1, 0, 
-    -0.95, 0.1, 2, 
-    0.95, 0.1, 2, 
-  
-    -0.05, 1.9, 0,
-    0.05, 1.9, 0, 
-    -0.05, 1.9, 2,
-    0.05, 1.9, 2
-  ],
-  "indices":  [
-    1, 2, 3, 
-    1, 3, 0,
-    4, 5, 3, 
-    4, 3, 0,
-  
-    4, 6, 7,
-    4, 7, 0,
-  
-    14, 16, 17,
-    14, 17, 10,
-  
-    0, 9, 8,
-    10, 9, 0,
-    0, 29, 31,
-    0, 31, 10,
-    0, 10, 30,
-    0, 30, 28,
-  
-    11, 12, 13, 
-    11, 13, 10,
-    14, 15, 13, 
-    14, 13, 10,
-  
-    0, 1, 18,
-    0, 18, 19,
-  
-    10, 17 , 20,
-    10, 20 , 21,
-  
-    1, 22, 2,
-    1, 11, 22,
-  
-    4, 5, 23,
-    4, 23, 14,
-  
-    20, 11, 16,
-    11, 14, 16,
-  
-    1, 18, 4,
-    4, 18, 6,
-    
-    1, 4, 24,
-    25, 24, 4,
-    4, 14, 25,
-    25, 14, 27,
-    1, 24, 11,
-    11, 24, 26,
-    14, 26, 27,
-    11, 26, 14
-  ],
+	vertices: [
+		0, 2, 0,
 
-  "color" : [
-    1, 0, 0,
-    1, 0, 0,
-    1, 0, 0,
-    1, 0, 0,
-    1, 0, 0,
-    1, 0, 0,
-    1, 0, 0,
-    1, 0, 0,
-    1, 0, 1,
-    1, 0, 1,
-    1, 0, 1,
-    1, 0, 1,
-    1, 0, 1,
-    1, 0, 1,
-    1, 0, 1,
-    1, 0, 1,
-    0, 1, 1,
-    0, 1, 1,
-    0, 1, 1,
-    0, 1, 1,
-    0, 1, 1,
-    0, 1, 1,
-    0, 1, 1,
-    0, 1, 1,
-    0, 0, 1,
-    0, 0, 1,
-    0, 0, 1,
-    0, 0, 1,
-    0, 0, 1,
-    0, 0, 1,
-    0, 0, 1,
-    0, 0, 1,
-  ]
-}
+		-1.0, 0, 0, -0.9, 0, 0, 0, 1.8, 0, 1.0, 0, 0, 0.9, 0, 0,
+
+		1.0, 0, 0.1, 0, 2, 0.1,
+
+		0, 1.8, 0, 0, 1.8, 2, 0, 2, 2,
+
+		-1.0, 0, 2, -0.9, 0, 2, 0, 1.8, 2, 1.0, 0, 2, 0.9, 0, 2,
+
+		1.0, 0, 2, 0, 2, 2,
+
+		-1.0, 0, 0.1, 0, 2, 0.1,
+
+		-1.0, 0, 2, -1.0, 0, 2,
+
+		-0.9, 0, 2, 0.9, 0, 2,
+
+		-0.95, 0.1, 0, 0.95, 0.1, 0, -0.95, 0.1, 2, 0.95, 0.1, 2,
+
+		-0.05, 1.9, 0, 0.05, 1.9, 0, -0.05, 1.9, 2, 0.05, 1.9, 2,
+	],
+	indices: [
+		1, 2, 3, 1, 3, 0, 4, 5, 3, 4, 3, 0,
+
+		4, 6, 7, 4, 7, 0,
+
+		14, 16, 17, 14, 17, 10,
+
+		0, 9, 8, 10, 9, 0, 0, 29, 31, 0, 31, 10, 0, 10, 30, 0, 30, 28,
+
+		11, 12, 13, 11, 13, 10, 14, 15, 13, 14, 13, 10,
+
+		0, 1, 18, 0, 18, 19,
+
+		10, 17, 20, 10, 20, 21,
+
+		1, 22, 2, 1, 11, 22,
+
+		4, 5, 23, 4, 23, 14,
+
+		20, 11, 16, 11, 14, 16,
+
+		1, 18, 4, 4, 18, 6,
+
+		1, 4, 24, 25, 24, 4, 4, 14, 25, 25, 14, 27, 1, 24, 11, 11, 24, 26, 14, 26,
+		27, 11, 26, 14,
+	],
+
+	color: [
+		1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
+		0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 1,
+		1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 1,
+		0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
+	],
+};
 
 main(jsonObj);
 
@@ -175,12 +101,17 @@ function main(jsonObj) {
 		farClipPlane: 100.0,
 	};
 
-  // LOAD OBJECT
-  const model = loadObject(gl, jsonObj.vertices, jsonObj.indices, jsonObj.color);
-  
-  const { mat4 } = glMatrix;
-  // Draw the scene
-  requestAnimationFrame(render);
+	// LOAD OBJECT
+	const model = loadObject(
+		gl,
+		jsonObj.vertices,
+		jsonObj.indices,
+		jsonObj.color
+	);
+
+	const { mat4 } = glMatrix;
+	// Draw the scene
+	requestAnimationFrame(render);
 
 	function render() {
 		// Clear Canvas
@@ -214,31 +145,28 @@ function drawObject(gl, program, model, projectionMatrix) {
 	const { mat4 } = glMatrix;
 	var modelViewMatrix = m4();
 
-  // SCALING 
-  modelViewMatrix = scale(modelViewMatrix, sx,sy,sz)
-  // ROTASI -> TAR GANTI BUATAN KITA
-  mat4.rotateX(projectionMatrix, projectionMatrix, rx);
-  mat4.rotateY(projectionMatrix, projectionMatrix, ry);
-  mat4.rotateZ(projectionMatrix, projectionMatrix, rz);
-  // console.log(modelViewMatrix)
-  {
-    const vertexPosition = gl.getAttribLocation(program, "aVertexPosition");
-    gl.bindBuffer(gl.ARRAY_BUFFER, model.position);
-    gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(vertexPosition);
+	// SCALING
+	modelViewMatrix = scale(modelViewMatrix, sx, sy, sz);
+	// ROTASI -> TAR GANTI BUATAN KITA
+	mat4.rotateX(projectionMatrix, projectionMatrix, rx);
+	mat4.rotateY(projectionMatrix, projectionMatrix, ry);
+	mat4.rotateZ(projectionMatrix, projectionMatrix, rz);
+	// console.log(modelViewMatrix)
+	{
+		const vertexPosition = gl.getAttribLocation(program, "aVertexPosition");
+		gl.bindBuffer(gl.ARRAY_BUFFER, model.position);
+		gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
+		gl.enableVertexAttribArray(vertexPosition);
 
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, model.indices);
+		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, model.indices);
 
-    const aVertexColor = gl.getAttribLocation(program, "aVertexColor");
-    gl.bindBuffer(gl.ARRAY_BUFFER, model.color);
-    gl.vertexAttribPointer(aVertexColor, 3, gl.FLOAT, false, 0,0);
-    gl.enableVertexAttribArray(aVertexColor);
-  }
+		const aVertexColor = gl.getAttribLocation(program, "aVertexColor");
+		gl.bindBuffer(gl.ARRAY_BUFFER, model.color);
+		gl.vertexAttribPointer(aVertexColor, 3, gl.FLOAT, false, 0, 0);
+		gl.enableVertexAttribArray(aVertexColor);
+	}
 
-
-  
-  // 
-    
+	//
 
 	const uProjectionMatrix = gl.getUniformLocation(program, "uProjectionMatrix");
 	gl.uniformMatrix4fv(uProjectionMatrix, false, projectionMatrix);
@@ -277,36 +205,36 @@ function loadShader(gl, type, source) {
 
 // Initialize object
 function loadObject(gl, vertices, indices, color) {
-  // Vertices's positions
-  const vertexBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+	// Vertices's positions
+	const vertexBuffer = gl.createBuffer();
+	gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
 
-  const indexBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-  gl.bufferData(
-    gl.ELEMENT_ARRAY_BUFFER,
-    new Uint16Array(indices),
-    gl.STATIC_DRAW
-  );
-  
-  if (!color){
-    const temp = []
-    for (var i = 0; i< vertices.length ; i++){
-      temp.push(1, 0.9, 0.1)
-    }
-    color = temp
-  }
-  
-  const colorBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(color), gl.STATIC_DRAW);
+	const indexBuffer = gl.createBuffer();
+	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+	gl.bufferData(
+		gl.ELEMENT_ARRAY_BUFFER,
+		new Uint16Array(indices),
+		gl.STATIC_DRAW
+	);
 
-  return {
-    position: vertexBuffer,
-    indices: indexBuffer,
-    color: colorBuffer,
-    vlength : vertices.length,
-    ilength : indices.length,
-  };
+	if (!color) {
+		const temp = [];
+		for (var i = 0; i < vertices.length; i++) {
+			temp.push(1, 0.9, 0.1);
+		}
+		color = temp;
+	}
+
+	const colorBuffer = gl.createBuffer();
+	gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(color), gl.STATIC_DRAW);
+
+	return {
+		position: vertexBuffer,
+		indices: indexBuffer,
+		color: colorBuffer,
+		vlength: vertices.length,
+		ilength: indices.length,
+	};
 }
