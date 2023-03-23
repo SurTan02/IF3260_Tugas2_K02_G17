@@ -148,10 +148,12 @@ function drawObject(gl, program, model, projectionMatrix) {
 	// SCALING
 	modelViewMatrix = scale(modelViewMatrix, sx, sy, sz);
 	// ROTASI -> TAR GANTI BUATAN KITA
-	mat4.rotateX(projectionMatrix, projectionMatrix, rx);
+
+	projectionMatrix = rotationX(projectionMatrix, projectionMatrix, rx);
 	mat4.rotateY(projectionMatrix, projectionMatrix, ry);
 	mat4.rotateZ(projectionMatrix, projectionMatrix, rz);
 	// console.log(modelViewMatrix)
+
 	{
 		const vertexPosition = gl.getAttribLocation(program, "aVertexPosition");
 		gl.bindBuffer(gl.ARRAY_BUFFER, model.position);
