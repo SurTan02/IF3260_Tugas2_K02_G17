@@ -131,14 +131,14 @@ const jsonObj = {
   ]
 }
 
-main(jsonObj)
+main(jsonObj);
 
 function main(jsonObj) {
-  const canvas = document.getElementById("canvas");
-  const gl = canvas.getContext("webgl");
-  // Define the vertex and fragment shaders
-  // SHADER -> TAR GANTI BUATAN KITA
-  const vertexShaderSource = `
+	const canvas = document.getElementById("canvas");
+	const gl = canvas.getContext("webgl");
+	// Define the vertex and fragment shaders
+	// SHADER -> TAR GANTI BUATAN KITA
+	const vertexShaderSource = `
   attribute vec4 aVertexPosition;
   attribute vec4 aVertexColor;
 
@@ -156,7 +156,7 @@ function main(jsonObj) {
   }
 
 `;
-  const fragmentShaderSource = `
+	const fragmentShaderSource = `
   varying lowp vec4 vColor;
 
   void main() {
@@ -164,15 +164,16 @@ function main(jsonObj) {
   }
 `;
 
-  const program = initShaders(gl, vertexShaderSource, fragmentShaderSource);
+	const program = initShaders(gl, vertexShaderSource, fragmentShaderSource);
 
-  // Set up the camera -> TAR GANTI BUATAN KITA
-  const camera = {
-    fieldOfView: (45 * Math.PI) / 180, // in radians
-    aspectRatio: canvas.clientWidth / canvas.clientHeight,
-    nearClipPlane: 0.1,
-    farClipPlane: 100.0,
-  };
+	// Set up the camera -> TAR GANTI BUATAN KITA
+	var fieldOfView = ((180 - zc) * Math.PI) / 180;
+	const camera = {
+		fieldOfView: fieldOfView, // in radians
+		aspectRatio: canvas.clientWidth / canvas.clientHeight,
+		nearClipPlane: 0.1,
+		farClipPlane: 100.0,
+	};
 
   // LOAD OBJECT
   const model = loadObject(gl, jsonObj.vertices, jsonObj.indices, jsonObj.color);
@@ -181,35 +182,37 @@ function main(jsonObj) {
   // Draw the scene
   requestAnimationFrame(render);
 
-  function render() {
-    // Clear Canvas
-    gl.clearColor(0.7, 0.7, 0.7, 1.0);
-    gl.clearDepth(1.0);
-    gl.enable(gl.DEPTH_TEST);
-    gl.depthFunc(gl.LEQUAL);
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+	function render() {
+		// Clear Canvas
+		gl.clearColor(0.7, 0.7, 0.7, 1.0);
+		gl.clearDepth(1.0);
+		gl.enable(gl.DEPTH_TEST);
+		gl.depthFunc(gl.LEQUAL);
+		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    // PROJECTION -> TAR GANTI BUATAN KITA
-    const projectionMatrix = m4();
-    mat4.perspective(
-      projectionMatrix,
-      camera.fieldOfView,
-      camera.aspectRatio,
-      camera.nearClipPlane,
-      camera.farClipPlane
-    );
-    // const projectionMatrix = getProjection(45, camera.aspectRatio, 1, 100)
-    mat4.translate(projectionMatrix, projectionMatrix, [0, 0, -10.0]);
-    drawObject(gl, program, model, projectionMatrix);
-    requestAnimationFrame(render);
-  }
+		// PROJECTION -> TAR GANTI BUATAN KITA
+		const projectionMatrix = m4();
+
+		var fieldOfView = ((180 - zc) * Math.PI) / 180;
+		mat4.perspective(
+			projectionMatrix,
+			fieldOfView,
+			camera.aspectRatio,
+			camera.nearClipPlane,
+			camera.farClipPlane
+		);
+		// const projectionMatrix = getProjection(45, camera.aspectRatio, 1, 100)
+		mat4.translate(projectionMatrix, projectionMatrix, [0, 0, -10.0]);
+		drawObject(gl, program, model, projectionMatrix);
+		requestAnimationFrame(render);
+	}
 }
 
 function drawObject(gl, program, model, projectionMatrix) {
-  gl.useProgram(program);
+	gl.useProgram(program);
 
-  const { mat4 } = glMatrix;
-  var modelViewMatrix = m4();
+	const { mat4 } = glMatrix;
+	var modelViewMatrix = m4();
 
   // SCALING 
   modelViewMatrix = scale(modelViewMatrix, sx,sy,sz)
@@ -237,39 +240,39 @@ function drawObject(gl, program, model, projectionMatrix) {
   // 
     
 
-  const uProjectionMatrix = gl.getUniformLocation(program, "uProjectionMatrix");
-  gl.uniformMatrix4fv(uProjectionMatrix, false, projectionMatrix);
+	const uProjectionMatrix = gl.getUniformLocation(program, "uProjectionMatrix");
+	gl.uniformMatrix4fv(uProjectionMatrix, false, projectionMatrix);
 
-  const uModelViewMatrix = gl.getUniformLocation(program, "uModelViewMatrix");
-  gl.uniformMatrix4fv(uModelViewMatrix, false, modelViewMatrix);
+	const uModelViewMatrix = gl.getUniformLocation(program, "uModelViewMatrix");
+	gl.uniformMatrix4fv(uModelViewMatrix, false, modelViewMatrix);
 
-  {
-    gl.drawElements(gl.TRIANGLES, model.ilength, gl.UNSIGNED_SHORT, 0);
-  }
+	{
+		gl.drawElements(gl.TRIANGLES, model.ilength, gl.UNSIGNED_SHORT, 0);
+	}
 }
 
 function initShaders(gl, vertexShaderSource, fragmentShaderSource) {
-  const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
-  const fragmentShader = loadShader(
-    gl,
-    gl.FRAGMENT_SHADER,
-    fragmentShaderSource
-  );
+	const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+	const fragmentShader = loadShader(
+		gl,
+		gl.FRAGMENT_SHADER,
+		fragmentShaderSource
+	);
 
-  const program = gl.createProgram();
-  gl.attachShader(program, vertexShader);
-  gl.attachShader(program, fragmentShader);
-  gl.linkProgram(program);
+	const program = gl.createProgram();
+	gl.attachShader(program, vertexShader);
+	gl.attachShader(program, fragmentShader);
+	gl.linkProgram(program);
 
-  return program;
+	return program;
 }
 
 function loadShader(gl, type, source) {
-  const shader = gl.createShader(type);
-  gl.shaderSource(shader, source);
-  gl.compileShader(shader);
+	const shader = gl.createShader(type);
+	gl.shaderSource(shader, source);
+	gl.compileShader(shader);
 
-  return shader;
+	return shader;
 }
 
 // Initialize object
