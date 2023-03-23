@@ -6,6 +6,7 @@ const slider_sy = document.getElementById("syField");
 const slider_sz = document.getElementById("szField");
 const slider_zc = document.getElementById("zoomCamera");
 const loader = document.getElementById("load");
+const resetCamera = document.getElementById("resetbutton");
 
 var rx = 0;
 var ry = 0;
@@ -63,4 +64,22 @@ loader.onchange = function (e) {
 		main(jsonObj);
 	};
 	reader.readAsText(file);
+};
+
+resetCamera.onclick = function (e) {
+	rx = 0;
+	ry = 0;
+	rz = 0;
+	sx = 1;
+	sy = 1;
+	sz = 1;
+	zc = 90;
+
+	slider_sx.value = sx;
+	slider_sy.value = sy;
+	slider_sz.value = sz;
+	slider_rx.value = rx;
+	slider_ry.value = ry;
+	slider_rz.value = rz;
+	slider_zc.value = zc;
 };
