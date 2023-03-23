@@ -1,4 +1,3 @@
-
 const jsonObj = {
   "vertices": [
     0, 2, 0,
@@ -94,6 +93,41 @@ const jsonObj = {
     11, 24, 26,
     14, 26, 27,
     11, 26, 14
+  ],
+
+  "color" : [
+    1, 0, 0,
+    1, 0, 0,
+    1, 0, 0,
+    1, 0, 0,
+    1, 0, 0,
+    1, 0, 0,
+    1, 0, 0,
+    1, 0, 0,
+    1, 0, 1,
+    1, 0, 1,
+    1, 0, 1,
+    1, 0, 1,
+    1, 0, 1,
+    1, 0, 1,
+    1, 0, 1,
+    1, 0, 1,
+    0, 1, 1,
+    0, 1, 1,
+    0, 1, 1,
+    0, 1, 1,
+    0, 1, 1,
+    0, 1, 1,
+    0, 1, 1,
+    0, 1, 1,
+    0, 0, 1,
+    0, 0, 1,
+    0, 0, 1,
+    0, 0, 1,
+    0, 0, 1,
+    0, 0, 1,
+    0, 0, 1,
+    0, 0, 1,
   ]
 }
 
@@ -106,6 +140,7 @@ function main(jsonObj) {
   // SHADER -> TAR GANTI BUATAN KITA
   const vertexShaderSource = `
   attribute vec4 aVertexPosition;
+  attribute vec4 aVertexColor;
 
   uniform vec4 uScale;
   uniform vec4 uVertexColor;
@@ -117,7 +152,7 @@ function main(jsonObj) {
   void main() {
       vec4 worldPos = uModelViewMatrix * aVertexPosition;
       gl_Position = uProjectionMatrix * worldPos;
-      vColor = uVertexColor;
+      vColor = aVertexColor;
   }
 
 `;
@@ -140,7 +175,7 @@ function main(jsonObj) {
   };
 
   // LOAD OBJECT
-  const model = loadObject(gl, jsonObj.vertices, jsonObj.indices);
+  const model = loadObject(gl, jsonObj.vertices, jsonObj.indices, jsonObj.color);
   
   const { mat4 } = glMatrix;
   // Draw the scene
@@ -188,13 +223,19 @@ function drawObject(gl, program, model, projectionMatrix) {
     gl.bindBuffer(gl.ARRAY_BUFFER, model.position);
     gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(vertexPosition);
+
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, model.indices);
+
+    const aVertexColor = gl.getAttribLocation(program, "aVertexColor");
+    gl.bindBuffer(gl.ARRAY_BUFFER, model.color);
+    gl.vertexAttribPointer(aVertexColor, 3, gl.FLOAT, false, 0,0);
+    gl.enableVertexAttribArray(aVertexColor);
   }
 
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, model.indices);
 
-  // COLOR
-  const uVertexColor = gl.getUniformLocation(program, "uVertexColor");
-  gl.uniform4fv(uVertexColor, [0.2, 0.6, 0.9, 1.0]);
+  
+  // 
+    
 
   const uProjectionMatrix = gl.getUniformLocation(program, "uProjectionMatrix");
   gl.uniformMatrix4fv(uProjectionMatrix, false, projectionMatrix);
@@ -232,7 +273,7 @@ function loadShader(gl, type, source) {
 }
 
 // Initialize object
-function loadObject(gl, vertices, indices) {
+function loadObject(gl, vertices, indices, color) {
   // Vertices's positions
   const vertexBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
@@ -245,10 +286,23 @@ function loadObject(gl, vertices, indices) {
     new Uint16Array(indices),
     gl.STATIC_DRAW
   );
+  
+  if (!color){
+    const temp = []
+    for (var i = 0; i< vertices.length ; i++){
+      temp.push(1, 0.9, 0.1)
+    }
+    color = temp
+  }
+  
+  const colorBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(color), gl.STATIC_DRAW);
 
   return {
     position: vertexBuffer,
     indices: indexBuffer,
+    color: colorBuffer,
     vlength : vertices.length,
     ilength : indices.length,
   };
