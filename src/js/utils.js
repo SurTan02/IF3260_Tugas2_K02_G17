@@ -115,3 +115,38 @@ const translate = (m, tx, ty, tz) =>{
 	var res = multiply(m, translateMatrix);
 	return res;
 };
+
+const perspective = (fov, aspect, zNear, zFar) => {
+	const f = Math.tan(Math.PI * 0.5 - 0.5 * fov);
+	const nf = 1 / (zNear-zFar);
+	const mat = [
+		f/aspect, 0, 0, 0,
+		0, f, 0, 0,
+		0, 0, (zFar+zNear) * nf, -1,
+		0, 0, 2 * zFar * zNear *nf, 0
+	];
+	return mat;
+}
+
+const oblique = (width, height, depth) => {
+	const mat = [
+		2/width, 0, 0, 0,
+		0, 2/height, 0, 0, 
+		0, 0, 2/depth, 0,
+		0, 0, 0, 1
+	]
+
+	const tetha = 75;
+	const phi = 85;
+	const cot_tetha = 1 / Math.tan(tetha/180*Math.PI);
+	const cot_phi = 1 / Math.tan(phi/180*Math.PI);
+
+	const mat2 = [
+		1, 0, 0, 0,
+		0, 1, 0, 0,
+		-cot_tetha, -cot_phi, 1, 0,
+		0, 0, 0, 1
+	]
+
+	return multiply(mat, mat2);
+}

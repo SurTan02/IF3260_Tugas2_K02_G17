@@ -132,6 +132,8 @@ function main(jsonObj) {
 			camera.nearClipPlane,
 			camera.farClipPlane
 		);
+
+    console.log(projectionMatrix);
 		// const projectionMatrix = getProjection(45, camera.aspectRatio, 1, 100)
 		mat4.translate(projectionMatrix, projectionMatrix, [0, 0, -10.0]);
 		drawObject(gl, program, model, projectionMatrix);
@@ -151,7 +153,7 @@ function drawObject(gl, program, model, projectionMatrix) {
 	projectionMatrix = rotationY(projectionMatrix, ry);
 	projectionMatrix = rotationZ(projectionMatrix, rz);
   // TRANSLASI
-  modelViewMatrix = translate(modelViewMatrix, tx, ty, tz)
+  modelViewMatrix = translate(modelViewMatrix, tx, ty, tz);
 
 	{
 		const vertexPosition = gl.getAttribLocation(program, "aVertexPosition");
