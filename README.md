@@ -17,7 +17,7 @@ Website yang dapat menerima inputan hollow objek 3D dan menampilkannya menggunak
 
 Website ini menyediakan fitur sebagai berikut.
 
-1. Load 3D object
+1. Load 3D object <br>
    Fitur ini digunakan untuk mengimport suatu object 3D pada canvas.
    Konfigurasi dari file adalah JSON file yang berisikan `vertices`, `indices`, dan `color`. Terdapat 3 hollow objek yang kami jadikan contoh yang dapat ditemukan pada folder `test`, yaitu:
 
@@ -26,28 +26,28 @@ Website ini menyediakan fitur sebagai berikut.
    - Octahedron (Monica Adelia 13520096)
      <br>
 
-2. Shading
+2. Shading <br>
    Terdapat tombol on/off untuk mengaktifkan atau mematikan fitur shading.
    <br>
-3. Projection
+3. Projection <br>
    Proyeksi yang terdapat pada website ini adalah orthographic, oblique, dan perspective.
    <br>
-4. Translation
+4. Translation <br>
    Terdapat slider untuk melakukan translasi sumbu x, y, dan z
    <br>
-5. Rotation
+5. Rotation <br>
    Terdapat slider untuk melakukan sumbu x, y, dan z
    <br>
-6. Scale
+6. Scale <br>
    Terdapat slider untuk melakukan scaling sumbu x, y, dan z
    <br>
-7. Camera
+7. Camera <br>
    Menggunakan slider untuk mengubah angle atau radius kamera dengan objek
    <br>
-8. Reset to default view
+8. Reset to default view <br>
    Mengembalikan objek ke tampilan semula
    <br>
-9. Help
+9. Help <br>
    Panduan dalam menjalankan website
    <br>
 
