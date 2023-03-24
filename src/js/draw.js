@@ -93,7 +93,6 @@ function main(jsonObj) {
 	const program = initShaders(gl, vertexShaderSource, fragmentShaderSource);
 
 	// Set up the camera -> TAR GANTI BUATAN KITA
-	var fieldOfView = ((180 - zc) * Math.PI) / 180;
 	const camera = {
 		fieldOfView: (45 * Math.PI) / 180, // in radians
 		aspectRatio: canvas.clientWidth / canvas.clientHeight,
@@ -122,19 +121,32 @@ function main(jsonObj) {
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
 		// PROJECTION -> TAR GANTI BUATAN KITA
-		const projectionMatrix = m4();
+		var projectionMatrix = m4();
 
-		var fieldOfView = ((180 - zc) * Math.PI) / 180;
+		// PERSPECTIVE -> ganti punya kita
 		mat4.perspective(
 			projectionMatrix,
-			(45 * Math.PI) / 180,
+			camera.fieldOfView,
 			camera.aspectRatio,
 			camera.nearClipPlane,
 			camera.farClipPlane
 		);
-		// const projectionMatrix = getProjection(45, camera.aspectRatio, 1, 100)
-		console.log("zc", zc);
-		mat4.translate(projectionMatrix, projectionMatrix, [0, 0, zc]);
+
+		// ORTHO
+		// projectionMatrix = orthographic(
+		// 	-5,
+		// 	5,
+		// 	-5,
+		// 	5,
+		// 	camera.nearClipPlane,
+		// 	camera.farClipPlane
+		// );
+
+		// OBLIQUE
+
+		// CAMERA POSITION
+		mat4.translate(projectionMatrix, projectionMatrix, [0, 0, -10]);
+
 		drawObject(gl, program, model, projectionMatrix);
 		requestAnimationFrame(render);
 	}
@@ -148,11 +160,15 @@ function drawObject(gl, program, model, projectionMatrix) {
 	// CAMERA ANGLE
 	projectionMatrix = rotationY(projectionMatrix, yc);
 
+	// CAMERA ZOOM
+	modelViewMatrix = scale(modelViewMatrix, zc, zc, zc);
+
 	// Rotasi
 	var cameraMatrix = m4();
 	cameraMatrix = xRotate(cameraMatrix, rx);
 	cameraMatrix = yRotate(cameraMatrix, ry);
 	cameraMatrix = zRotate(cameraMatrix, rz);
+
 	var viewMatrix = inverse(cameraMatrix);
 
 	// SCALING

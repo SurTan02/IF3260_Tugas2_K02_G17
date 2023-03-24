@@ -23,7 +23,7 @@ var sx = 1;
 var sy = 1;
 var sz = 1;
 var yc = 0;
-var zc = -15;
+var zc = 1;
 
 slider_tx.value = tx;
 slider_ty.value = ty;
@@ -106,7 +106,7 @@ resetCamera.onclick = function (e) {
 	sy = 1;
 	sz = 1;
 	yc = 0;
-	zc = 90;
+	zc = 1;
 
 	slider_tx.value = tx;
 	slider_ty.value = ty;
