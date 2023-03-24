@@ -12,30 +12,21 @@ const slider_zc = document.getElementById("zoomCamera");
 
 const loader = document.getElementById("load");
 const resetCamera = document.getElementById("resetbutton");
+const save_btn = document.getElementById("savebutton");
+const projection_opt = document.getElementById("projection-option");
+const animation_check = document.getElementById("animation-state");
 
 var tx = 0;
 var ty = 0;
 var tz = 0;
-var rx = 0;
-var ry = 0;
+var rx = 5.78;
+var ry = 3.8;
 var rz = 0;
 var sx = 1;
 var sy = 1;
 var sz = 1;
 var yc = 0;
 var zc = 1;
-
-slider_tx.value = tx;
-slider_ty.value = ty;
-slider_ty.value = ty;
-slider_sx.value = sx;
-slider_sy.value = sy;
-slider_sz.value = sz;
-slider_rx.value = rx;
-slider_ry.value = ry;
-slider_rz.value = rz;
-slider_yc.value = yc;
-slider_zc.value = zc;
 
 slider_tx.oninput = function () {
 	tx = this.value;
@@ -50,15 +41,15 @@ slider_tz.oninput = function () {
 };
 
 slider_rx.oninput = function () {
-	rx = (this.value / 180) * Math.PI;
+	rx = this.value	
 };
 
 slider_ry.oninput = function () {
-	ry = (this.value / 180) * Math.PI;
+	ry = this.value
 };
 
 slider_rz.oninput = function () {
-	rz = (this.value / 180) * Math.PI;
+	rz =  this.value
 };
 
 slider_sx.oninput = function () {
@@ -120,3 +111,8 @@ resetCamera.onclick = function (e) {
 	slider_yc.value = yc;
 	slider_zc.value = zc;
 };
+
+projection_opt.onchange = function(){
+	const selectedProjection = document.querySelector('input[name="projection-option"]:checked').value;
+	this.value = selectedProjection
+}

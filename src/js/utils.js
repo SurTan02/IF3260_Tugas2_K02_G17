@@ -25,6 +25,51 @@ const orthographic = (left, right, bottom, top, near, far) => {
 	];
 };
 
+const perspective = (angle, aspect, zMin, zMax) => {
+	// angle = 45
+	// (45 * Math.PI) / 180, 
+	var top = Math.tan((angle) * Math.PI/360);
+	var right = top * aspect;
+	return [
+	   1/right, 0 , 0, 0,
+	   0, 1/top, 0, 0,
+	   0, 0, (zMax+zMin)/(zMin-zMax), -1,
+	   0, 0, (2*zMax*zMin)/(zMin-zMax), 0 
+	   ];
+}
+
+const getProjection = (type) => {
+	const camera = {
+		fieldOfView: 60,
+		aspectRatio: canvas.clientWidth / canvas.clientHeight,
+		nearClipPlane: 1,
+		farClipPlane: 100.0,
+	};
+	projectionMatrix = m4()
+	switch(type) {
+		case "oblique":
+			break;
+		case "orthographic":
+			projectionMatrix = orthographic(
+				-5,
+				5,
+				-5,
+				5,
+				camera.nearClipPlane,
+				camera.farClipPlane
+				);
+			break;
+		default:
+			projectionMatrix = perspective(
+				camera.fieldOfView,
+				camera.aspectRatio,
+				camera.nearClipPlane,
+				camera.farClipPlane
+			);
+	}
+	return projectionMatrix
+}
+
 const multiply = (a, b) => {
 	let res = new Array(16).fill(0);
 	for (let i = 0; i < 4; i++) {
@@ -118,45 +163,50 @@ const rotationZ = (n, a) => {
 };
 
 const translate = (m, tx, ty, tz) => {
-	const translateMatrix = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, tx, ty, tz, 1];
+	const translateMatrix = [
+		1, 0, 0, 0,
+		0, 1, 0, 0,
+		0, 0, 1, 0,
+		tx, ty, tz, 1
+	];
 	var res = multiply(m, translateMatrix);
 	return res;
 };
 
-function xRotation(angleInRadians) {
+const xRotation = (angleInRadians) => {
 	var c = Math.cos(angleInRadians);
 	var s = Math.sin(angleInRadians);
 
 	return [1, 0, 0, 0, 0, c, s, 0, 0, -s, c, 0, 0, 0, 0, 1];
 }
 
-function yRotation(angleInRadians) {
+const yRotation = (angleInRadians) => {
 	var c = Math.cos(angleInRadians);
 	var s = Math.sin(angleInRadians);
 
 	return [c, 0, -s, 0, 0, 1, 0, 0, s, 0, c, 0, 0, 0, 0, 1];
 }
 
-function zRotation(angleInRadians) {
+const zRotation = (angleInRadians) => {
 	var c = Math.cos(angleInRadians);
 	var s = Math.sin(angleInRadians);
 
 	return [c, s, 0, 0, -s, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
 }
 
-function xRotate(m, angleInRadians) {
+const xRotate = (m, angleInRadians) => {
 	return multiply(m, xRotation(angleInRadians));
 }
 
-function yRotate(m, angleInRadians) {
+const yRotate = (m, angleInRadians) => {
 	return multiply(m, yRotation(angleInRadians));
 }
 
-function zRotate(m, angleInRadians) {
+const zRotate = (m, angleInRadians) => {
 	return multiply(m, zRotation(angleInRadians));
 }
 
-function inverse(m) {
+const inverse = (m) => {
 	var m00 = m[0 * 4 + 0];
 	var m01 = m[0 * 4 + 1];
 	var m02 = m[0 * 4 + 2];

@@ -37,7 +37,7 @@
 
                 </div>
 			</div>
-            <canvas id="canvas" width="640px" height="480px"></canvas>
+            <canvas id="canvas" width="1280px" height="720px"></canvas>
 			<!-- <canvas id="canvas"></canvas> -->
 			<div class="pane">
                 <h2 style="text-align: center; border-bottom: 1px solid #7e78be;">
@@ -48,23 +48,25 @@
                 <div>
 					<label for="shader-state" class="control-label">Shader enabled </label>
 					<input type="checkbox" name="shader-state" id="shader-state" checked>
+					<label for="animation-state" class="control-label">Animation</label>
+					<input type="checkbox" name="animation-state" id="animation-state">
 				</div>
                 <br>
 				<div style="padding-bottom:0">
 					<span class="control-label">Projection</span>
-					<form class ="input-container">
+					<form class ="input-container" id="projection-option">
                         <label>
-                          <input type="radio" name="option" value="option1">
+                          <input type="radio" name="projection-option" value="perspective" checked>
                           Perspective
                         </label>
                         <br>
                         <label>
-                          <input type="radio" name="option" value="option2">
+                          <input type="radio" name="projection-option" value="orthographic">
                           Orthographic
                         </label>
                         <br>
                         <label>
-                          <input type="radio" name="option" value="option3">
+                          <input type="radio" name="projection-option" value="oblique">
                           Oblique
                         </label>
                       </form>
@@ -116,7 +118,8 @@
                         
                     </div>
 				</div>
-                <br><input type="button" class="resetbutton" id="resetbutton" name="resetbutton" value="Reset Default View" >
+                    <br><input type="button" class="resetbutton" id="resetbutton" name="resetbutton" value="Reset Default View" >
+                    <br><input type="button" class="savebutton" id="savebutton" name="savebutton" value="Save Model" >
                 <div>
 
                 </div>
