@@ -144,14 +144,25 @@ function drawObject(gl, program, model, projectionMatrix) {
 
 	var modelViewMatrix = m4();
 
+	// CAMERA ANGLE
+	projectionMatrix = rotationY(projectionMatrix, yc);
+	var cameraMatrix = m4();
+	cameraMatrix = xRotate(cameraMatrix, rx);
+	cameraMatrix = yRotate(cameraMatrix, ry);
+	cameraMatrix = zRotate(cameraMatrix, rz);
+	var viewMatrix = inverse(cameraMatrix);
+
 	// SCALING
 	modelViewMatrix = scale(modelViewMatrix, sx, sy, sz);
+
+	modelViewMatrix = multiply(modelViewMatrix, viewMatrix);
+
 	// ROTASI
-	projectionMatrix = rotationX(projectionMatrix, rx);
-	projectionMatrix = rotationY(projectionMatrix, ry);
-	projectionMatrix = rotationZ(projectionMatrix, rz);
-  // TRANSLASI
-  modelViewMatrix = translate(modelViewMatrix, tx, ty, tz)
+	// projectionMatrix = rotationX(projectionMatrix, rx);
+	// projectionMatrix = rotationY(projectionMatrix, ry);
+	// projectionMatrix = rotationZ(projectionMatrix, rz);
+	// TRANSLASI
+	modelViewMatrix = translate(modelViewMatrix, tx, ty, tz);
 
 	{
 		const vertexPosition = gl.getAttribLocation(program, "aVertexPosition");
