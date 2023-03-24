@@ -104,3 +104,14 @@ const rotationZ = (n, a) => {
 
 	return matrix;
 };
+
+const translate = (m, tx, ty, tz) =>{
+	const translateMatrix = [
+		1, 0, 0, 0, 
+		0, 1, 0, 0, 
+		0, 0, 1, 0, 
+		tx, ty, tz, 1
+	];
+	var res = multiply(m, translateMatrix);
+	return res;
+};

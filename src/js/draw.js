@@ -150,6 +150,8 @@ function drawObject(gl, program, model, projectionMatrix) {
 	projectionMatrix = rotationX(projectionMatrix, rx);
 	projectionMatrix = rotationY(projectionMatrix, ry);
 	projectionMatrix = rotationZ(projectionMatrix, rz);
+  // TRANSLASI
+  modelViewMatrix = translate(modelViewMatrix, tx, ty, tz)
 
 	{
 		const vertexPosition = gl.getAttribLocation(program, "aVertexPosition");

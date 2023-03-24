@@ -1,3 +1,6 @@
+const slider_tx = document.getElementById("txField");
+const slider_ty = document.getElementById("tyField");
+const slider_tz = document.getElementById("tzField");
 const slider_rx = document.getElementById("rxField");
 const slider_ry = document.getElementById("ryField");
 const slider_rz = document.getElementById("rzField");
@@ -8,6 +11,9 @@ const slider_zc = document.getElementById("zoomCamera");
 const loader = document.getElementById("load");
 const resetCamera = document.getElementById("resetbutton");
 
+var tx = 0;
+var ty = 0;
+var tz = 0;
 var rx = 0;
 var ry = 0;
 var rz = 0;
@@ -16,6 +22,9 @@ var sy = 1;
 var sz = 1;
 var zc = 90;
 
+slider_tx.value = tx;
+slider_ty.value = ty;
+slider_ty.value = ty;
 slider_sx.value = sx;
 slider_sy.value = sy;
 slider_sz.value = sz;
@@ -23,6 +32,18 @@ slider_rx.value = rx;
 slider_ry.value = ry;
 slider_rz.value = rz;
 slider_zc.value = zc;
+
+slider_tx.oninput = function () {
+	tx = this.value;
+};
+
+slider_ty.oninput = function () {
+	ty = this.value;
+};
+
+slider_tz.oninput = function () {
+	tz = this.value;
+};
 
 slider_rx.oninput = function () {
 	rx = (this.value / 180) * Math.PI;
