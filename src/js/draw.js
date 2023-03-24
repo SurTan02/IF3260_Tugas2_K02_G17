@@ -95,7 +95,7 @@ function main(jsonObj) {
 	// Set up the camera -> TAR GANTI BUATAN KITA
 	var fieldOfView = ((180 - zc) * Math.PI) / 180;
 	const camera = {
-		fieldOfView: fieldOfView, // in radians
+		fieldOfView: (45 * Math.PI) / 180, // in radians
 		aspectRatio: canvas.clientWidth / canvas.clientHeight,
 		nearClipPlane: 0.1,
 		farClipPlane: 100.0,
@@ -127,13 +127,14 @@ function main(jsonObj) {
 		var fieldOfView = ((180 - zc) * Math.PI) / 180;
 		mat4.perspective(
 			projectionMatrix,
-			fieldOfView,
+			(45 * Math.PI) / 180,
 			camera.aspectRatio,
 			camera.nearClipPlane,
 			camera.farClipPlane
 		);
 		// const projectionMatrix = getProjection(45, camera.aspectRatio, 1, 100)
-		mat4.translate(projectionMatrix, projectionMatrix, [0, 0, -10.0]);
+		console.log("zc", zc);
+		mat4.translate(projectionMatrix, projectionMatrix, [0, 0, zc]);
 		drawObject(gl, program, model, projectionMatrix);
 		requestAnimationFrame(render);
 	}
@@ -146,6 +147,8 @@ function drawObject(gl, program, model, projectionMatrix) {
 
 	// CAMERA ANGLE
 	projectionMatrix = rotationY(projectionMatrix, yc);
+
+	// Rotasi
 	var cameraMatrix = m4();
 	cameraMatrix = xRotate(cameraMatrix, rx);
 	cameraMatrix = yRotate(cameraMatrix, ry);
@@ -157,10 +160,6 @@ function drawObject(gl, program, model, projectionMatrix) {
 
 	modelViewMatrix = multiply(modelViewMatrix, viewMatrix);
 
-	// ROTASI
-	// projectionMatrix = rotationX(projectionMatrix, rx);
-	// projectionMatrix = rotationY(projectionMatrix, ry);
-	// projectionMatrix = rotationZ(projectionMatrix, rz);
 	// TRANSLASI
 	modelViewMatrix = translate(modelViewMatrix, tx, ty, tz);
 

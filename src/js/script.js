@@ -23,7 +23,7 @@ var sx = 1;
 var sy = 1;
 var sz = 1;
 var yc = 0;
-var zc = 90;
+var zc = -15;
 
 slider_tx.value = tx;
 slider_ty.value = ty;
