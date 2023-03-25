@@ -58,6 +58,9 @@ const getProjection = (type) => {
 	projectionMatrix = m4()
 	switch(type) {
 		case "oblique":
+			projectionMatrix = oblique(
+				10,10,100
+			)
 			break;
 		case "orthographic":
 			projectionMatrix = orthographic(
