@@ -3,6 +3,16 @@ const m4 = () => {
 	return matrix;
 };
 
+const hexToRgb = (hex) => {
+	// Mengubah format hex color menjadi RGB
+	var r = parseInt(hex.substring(1, 3), 16) / 255;
+	var g = parseInt(hex.substring(3, 5), 16) / 255;
+	var b = parseInt(hex.substring(5, 7), 16) / 255;
+	
+	// Mengembalikan nilai RGB dengan skala 0 hingga 1 untuk setiap elemennya
+	return [r, g, b];
+}
+
 const orthographic = (left, right, bottom, top, near, far) => {
 	return [
 		2 / (right - left),
@@ -173,6 +183,28 @@ const translate = (m, tx, ty, tz) => {
 	return res;
 };
 
+const oblique = (width, height, depth) => {
+	const mat = [
+		2/width, 0, 0, 0,
+		0, 2/height, 0, 0, 
+		0, 0, 2/depth, 0,
+		0, 0, 0, 1
+	]
+
+	const tetha = 75;
+	const phi = 85;
+	const cot_tetha = 1 / Math.tan(tetha/180*Math.PI);
+	const cot_phi = 1 / Math.tan(phi/180*Math.PI);
+
+	const mat2 = [
+		1, 0, 0, 0,
+		0, 1, 0, 0,
+		-cot_tetha, -cot_phi, 1, 0,
+		0, 0, 0, 1
+	]
+
+	return multiply(mat, mat2);
+}
 const xRotation = (angleInRadians) => {
 	var c = Math.cos(angleInRadians);
 	var s = Math.sin(angleInRadians);
@@ -337,4 +369,22 @@ const inverse = (m) => {
 				tmp_21 * m12 -
 				(tmp_20 * m12 + tmp_23 * m22 + tmp_17 * m02)),
 	];
+}
+
+const normalizeVector = (v) =>{
+	var length = Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2])
+	if (length > 0.00001){
+		return [v[0] / length, v[1] / length, v[2] / length];
+	}else{
+		return [0, 0, 0];
+	}
+}
+
+const transpose = (m) => {
+	return [
+		m[0], m[4], m[8], m[12],
+		m[1], m[5], m[9], m[13],
+		m[2], m[6], m[10], m[14],
+		m[3], m[7], m[11], m[15],
+	]
 }

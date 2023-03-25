@@ -9,12 +9,24 @@ const slider_sy = document.getElementById("syField");
 const slider_yc = document.getElementById("yCamera");
 const slider_sz = document.getElementById("szField");
 const slider_zc = document.getElementById("zoomCamera");
+const slider_ar = document.getElementById("ambientField");
+const slider_dr = document.getElementById("diffuseField");
+const slider_sr = document.getElementById("specularField");
+const slider_sh = document.getElementById("shininessField");
+const slider_lx = document.getElementById("lxField");
+const slider_ly = document.getElementById("lyField");
+const slider_lz = document.getElementById("lzField");
+
+const color_picker_ar = document.getElementById("ambientColorField");
+const color_picker_dr = document.getElementById("diffuseColorField");
+const color_picker_sr = document.getElementById("specularColorField");
 
 const loader = document.getElementById("load");
 const resetCamera = document.getElementById("resetbutton");
 const save_btn = document.getElementById("savebutton");
 const projection_opt = document.getElementById("projection-option");
 const animation_check = document.getElementById("animation-state");
+const shading_check = document.getElementById("shader-state");
 
 var tx = 0;
 var ty = 0;
@@ -27,6 +39,17 @@ var sy = 1;
 var sz = 1;
 var yc = 0;
 var zc = 1;
+var ar = 1.0;
+var dr = 1.0;
+var sr = 1.0;
+var sh = 0.0;
+var lx = 1.0;
+var ly = 1.0;
+var lz = 1.0;
+
+var aColor = [1,0,0];
+var dColor = [0,1,0];
+var sColor = [0,0,1];
 
 slider_tx.oninput = function () {
 	tx = this.value;
@@ -71,6 +94,38 @@ slider_yc.oninput = function () {
 slider_zc.oninput = function () {
 	zc = this.value;
 };
+
+slider_ar.oninput = function () {
+	ar = this.value;
+};
+slider_dr.oninput = function () {
+	dr = this.value;
+};
+slider_sr.oninput = function () {
+	sr = this.value;
+};
+slider_sh.oninput = function () {
+	sh = this.value;
+};
+slider_lx.oninput = function () {
+	lx = this.value;
+};
+slider_ly.oninput = function () {
+	ly = this.value;
+};
+slider_lz.oninput = function () {
+	lz = this.value;
+};
+
+color_picker_ar.oninput = function() {
+	aColor = hexToRgb(this.value); 
+}
+color_picker_dr.oninput = function() {
+	dColor = hexToRgb(this.value); 
+}
+color_picker_sr.oninput = function() {
+	sColor = hexToRgb(this.value); 
+}
 
 loader.onchange = function (e) {
 	tx = 0;
@@ -127,4 +182,4 @@ resetCamera.onclick = function (e) {
 projection_opt.onchange = function(){
 	const selectedProjection = document.querySelector('input[name="projection-option"]:checked').value;
 	this.value = selectedProjection
-}
+};
