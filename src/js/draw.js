@@ -289,28 +289,75 @@ function main(jsonObj) {
 	// Define the vertex and fragment shaders
 	// SHADER -> TAR GANTI BUATAN KITA
 	const vertexShaderSource = `
-	attribute vec4 aVertexPosition;
-	attribute vec4 aVertexColor;
-
-	uniform vec4 uScale;
+	attribute vec3 aVertexPosition; 
+  attribute vec3 aBarycentric;
+  attribute vec3 aNormal; 
+  
+  varying vec3 interpBary;
+  varying vec3 normalInterp;
+  varying vec3 vertPos;
+  
+	uniform mat4 uModelViewMatrix; 
+	uniform mat4 uProjectionMatrix; 
+  uniform mat4 uNormalMatrix; 
+  
+	attribute vec3 aVertexColor; 
 	uniform vec4 uVertexColor;
-	uniform mat4 uModelViewMatrix;
-	uniform mat4 uProjectionMatrix;
 
-	varying lowp vec4 vColor;
+  varying lowp vec4 vColor;
 
-	void main() {
-		vec4 newModelViewMatrix = uModelViewMatrix * aVertexPosition;
+	void main(void) {
+		vec4 newModelViewMatrix = uModelViewMatrix * vec4(aVertexPosition, 1.0);
+    
+    interpBary = aBarycentric;
 		gl_Position = uProjectionMatrix * newModelViewMatrix;
-		vColor = aVertexColor;
-	}
+    vec3 transformedNormal = vec3(uNormalMatrix * vec4(aNormal, 0.0));
+    vec4 vertPos4 = uModelViewMatrix * vec4(aVertexPosition, 1.0);
+    vertPos = vec3(vertPos4) / vertPos4.w;
+    normalInterp = vec3(uNormalMatrix * vec4(transformedNormal, 0.0));
+    
+		vColor = vec4(aVertexColor, 1.0);
+
+  }
 
 	`;
 	const fragmentShaderSource = `
-	varying lowp vec4 vColor;
+  #ifdef GL_OES_standard_derivatives
+    #extension GL_OES_standard_derivatives : enable
+  #endif
 
-	void main() {
-		gl_FragColor = vColor;
+	precision mediump float;
+  varying vec3 normalInterp;
+  varying vec3 vertPos;
+  varying lowp vec4 vColor;
+  
+  const vec3 lightPos = vec3(1.0,1.0,1.0);
+  const vec3 ambientColor = vec3(0.1, 0.1, 0.1);
+  const vec3 diffuseColor = vec3(0.5, 0.1, 0.1);
+  const vec3 specColor = vec3(1.0, 1.0, 1.0);
+
+  uniform bool uShading;
+
+	void main(void) {
+    if (uShading){
+      vec3 normal = normalize(normalInterp);
+      vec3 lightDir = normalize(lightPos - vertPos);
+      vec3 reflectDir = reflect(-lightDir, normal);
+      vec3 viewDir = normalize(-vertPos);
+
+      float lambertian = max(dot(lightDir,normal), 0.0);
+      float specular = 0.0;
+
+      if(lambertian > 0.0) {
+        float specAngle = max(dot(reflectDir, viewDir), 0.0);
+        specular = pow(specAngle, 15.0);
+      }
+
+      gl_FragColor = vec4(ambientColor + lambertian*diffuseColor + specular*specColor, 1.0);
+
+    }else{
+      gl_FragColor = vColor;
+    }
 	}
 	`;
 
@@ -376,23 +423,15 @@ function drawObject(gl, program, jsonObj, projectionMatrix) {
 
 	// SCALING
 	modelViewMatrix = scale(modelViewMatrix, sx, sy, sz);
-<<<<<<< HEAD
-	// ROTASI
-	projectionMatrix = rotationX(projectionMatrix, rx);
-	projectionMatrix = rotationY(projectionMatrix, ry);
-	projectionMatrix = rotationZ(projectionMatrix, rz);
-  // TRANSLASI
-  modelViewMatrix = translate(modelViewMatrix, tx, ty, tz);
-=======
 	modelViewMatrix = multiply(modelViewMatrix, viewMatrix);
->>>>>>> 3907e0f859c79a590bc2c016a76d1d3648614d1a
 
 	// TRANSLASI
 	modelViewMatrix = translate(modelViewMatrix, tx, ty, tz);
 	
 	// SAVE BUTTON
 	save_btn.onclick = () => saveObjectfunction(jsonObj, modelViewMatrix)
-	{
+	
+  {
 		const vertexPosition = gl.getAttribLocation(program, "aVertexPosition");
 		gl.bindBuffer(gl.ARRAY_BUFFER, model.position);
 		gl.vertexAttribPointer(vertexPosition, 3, gl.FLOAT, false, 0, 0);
@@ -404,8 +443,17 @@ function drawObject(gl, program, jsonObj, projectionMatrix) {
 		gl.bindBuffer(gl.ARRAY_BUFFER, model.color);
 		gl.vertexAttribPointer(aVertexColor, 3, gl.FLOAT, false, 0, 0);
 		gl.enableVertexAttribArray(aVertexColor);
+    
+    const aBarycentric = gl.getAttribLocation(program, "aBarycentric");
+    gl.bindBuffer(gl.ARRAY_BUFFER, model.barycentric);
+		gl.vertexAttribPointer(aBarycentric, 3, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(aBarycentric);
+    
+    const aNormal = gl.getAttribLocation(program, "aNormal");
+		gl.vertexAttribPointer(aNormal, 3, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(aNormal);
 	}
-
+    
 	//
 
 	const uProjectionMatrix = gl.getUniformLocation(program, "uProjectionMatrix");
@@ -414,6 +462,13 @@ function drawObject(gl, program, jsonObj, projectionMatrix) {
 	const uModelViewMatrix = gl.getUniformLocation(program, "uModelViewMatrix");
 	gl.uniformMatrix4fv(uModelViewMatrix, false, modelViewMatrix);
 
+  var uShading = gl.getUniformLocation(program, "uShading");
+  gl.uniform1i(uShading, shading_check.checked)
+  
+  const uNormalMatrix = gl.getUniformLocation(program, "uNormalMatrix");
+  var normalModelViewMatrix = transpose(inverse(modelViewMatrix));
+  gl.uniformMatrix4fv(uNormalMatrix, false, normalModelViewMatrix);
+
 	{
 		gl.drawElements(gl.TRIANGLES, model.ilength, gl.UNSIGNED_SHORT, 0);
 	}
@@ -421,17 +476,17 @@ function drawObject(gl, program, jsonObj, projectionMatrix) {
 
 function initShaders(gl, vertexShaderSource, fragmentShaderSource) {
 	const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
-	const fragmentShader = loadShader(
-		gl,
-		gl.FRAGMENT_SHADER,
-		fragmentShaderSource
-	);
-
+	const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+    
 	const program = gl.createProgram();
 	gl.attachShader(program, vertexShader);
 	gl.attachShader(program, fragmentShader);
 	gl.linkProgram(program);
 
+  if(!gl.getProgramParameter(program, gl.LINK_STATUS)){
+    console.log("Unable to init shader program");
+  } 
+  
 	return program;
 }
 
@@ -439,6 +494,11 @@ function loadShader(gl, type, source) {
 	const shader = gl.createShader(type);
 	gl.shaderSource(shader, source);
 	gl.compileShader(shader);
+  var success = gl.getShaderParameter(shader, gl.COMPILE_STATUS);;
+  if (!success){
+    var error = gl.getShaderInfoLog(shader);
+    console.error("Shader compilation failed:", error);
+  }
 
 	return shader;
 }
@@ -470,15 +530,55 @@ function loadObject(gl, vertices, indices, color) {
 	gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(color), gl.STATIC_DRAW);
 
-	return {
+  var bary = []
+  var normal = []
+  indices.forEach(function(d,i){
+    if(i%3 == 0){
+      var setOfThreeIndices = indices.slice(i, i+3);
+      const v1Idx = setOfThreeIndices[0];
+      const v2Idx = setOfThreeIndices[1];
+      const v3Idx = setOfThreeIndices[2];
+      let v1 = [
+        vertices[v2Idx*3 + 0] - vertices[v1Idx*3 + 0],
+        vertices[v2Idx*3 + 1] - vertices[v1Idx*3 + 0],
+        vertices[v2Idx*3 + 2] - vertices[v1Idx*3 + 0]
+      ];
+      let v2 = [
+        vertices[v3Idx*3 + 0] - vertices[v1Idx*3 + 0],
+        vertices[v3Idx*3 + 0] - vertices[v1Idx*3 + 0],
+        vertices[v3Idx*3 + 0] - vertices[v1Idx*3 + 0]
+      ];
+      let n = [0, 0, 0];
+      n[0] = v1[1] * v2[2] - v1[2] * v2[1];
+      n[1] = v1[2] * v2[0] - v1[0] * v2[2];
+      n[2] = v1[0] * v2[1] - v1[1] * v2[0];
+
+      normal.push(n[0],n[1],n[2]);
+      bary.push(1,0,0);
+    } else if(i % 3 == 1){
+        bary.push(0,1,0);
+    } else if(i % 3 == 2){
+        bary.push(0,0,1);
+    }
+  });
+ 
+  const barycentricBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, barycentricBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(bary), gl.STATIC_DRAW);
+  
+  const normalBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normal), gl.STATIC_DRAW);
+	
+  return {
 		position: vertexBuffer,
 		indices: indexBuffer,
 		color: colorBuffer,
+    barycentric : barycentricBuffer,
+    normal : normalBuffer,
 		vlength: vertices.length,
 		ilength: indices.length,
 	};
-<<<<<<< HEAD
-=======
 }
 
 function saveObjectfunction (jsonObj, modelViewMatrix) {
@@ -491,5 +591,4 @@ function saveObjectfunction (jsonObj, modelViewMatrix) {
   	link.download = 'objects.json';
   	link.click();
   	URL.revokeObjectURL(url);
->>>>>>> 3907e0f859c79a590bc2c016a76d1d3648614d1a
 }

@@ -144,10 +144,20 @@ vertices = [
     -0.2, 0.4, 0.2
 ]
 result = []
+
+# ONE COLOR
+num = random.uniform(0,1)
+num = round(num,2)
+for i in range(0,len(vertices),3):
+    result.append(0.0)
+    result.append(1.0)
+    result.append(1.0)
+'''
 for i in range(len(vertices)):
     num = random.uniform(0,1)
     num = round(num,2)
     result.append(num)
+'''  
 
 with open ('textcolor.txt', 'w') as file:
     idxPrt = 0

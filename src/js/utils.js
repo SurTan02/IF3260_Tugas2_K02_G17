@@ -173,18 +173,6 @@ const translate = (m, tx, ty, tz) => {
 	return res;
 };
 
-const perspective = (fov, aspect, zNear, zFar) => {
-	const f = Math.tan(Math.PI * 0.5 - 0.5 * fov);
-	const nf = 1 / (zNear-zFar);
-	const mat = [
-		f/aspect, 0, 0, 0,
-		0, f, 0, 0,
-		0, 0, (zFar+zNear) * nf, -1,
-		0, 0, 2 * zFar * zNear *nf, 0
-	];
-	return mat;
-}
-
 const oblique = (width, height, depth) => {
 	const mat = [
 		2/width, 0, 0, 0,
@@ -371,4 +359,22 @@ const inverse = (m) => {
 				tmp_21 * m12 -
 				(tmp_20 * m12 + tmp_23 * m22 + tmp_17 * m02)),
 	];
+}
+
+const normalizeVector = (v) =>{
+	var length = Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2])
+	if (length > 0.00001){
+		return [v[0] / length, v[1] / length, v[2] / length];
+	}else{
+		return [0, 0, 0];
+	}
+}
+
+const transpose = (m) => {
+	return [
+		m[0], m[4], m[8], m[12],
+		m[1], m[5], m[9], m[13],
+		m[2], m[6], m[10], m[14],
+		m[3], m[7], m[11], m[15],
+	]
 }

@@ -15,6 +15,7 @@ const resetCamera = document.getElementById("resetbutton");
 const save_btn = document.getElementById("savebutton");
 const projection_opt = document.getElementById("projection-option");
 const animation_check = document.getElementById("animation-state");
+const shading_check = document.getElementById("shader-state");
 
 var tx = 0;
 var ty = 0;
