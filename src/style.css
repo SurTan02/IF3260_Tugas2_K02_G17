@@ -21,6 +21,14 @@ main {
     display: flex;
 }
 
+p {
+    font-size: medium;
+}
+
+strong {
+    text-decoration: underline;
+}
+
 #left-pane {
     width: 25%;
     background-color: #1D1F3D;
@@ -141,4 +149,3 @@ input[type=file] {
     border-radius: 8px;
     align-self:center;
 }
-  
