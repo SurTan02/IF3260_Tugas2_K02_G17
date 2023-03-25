@@ -322,26 +322,28 @@ function main(jsonObj) {
 
 	`;
 	const fragmentShaderSource = `
-  #ifdef GL_OES_standard_derivatives
-    #extension GL_OES_standard_derivatives : enable
-  #endif
 
 	precision mediump float;
   varying vec3 normalInterp;
   varying vec3 vertPos;
   varying lowp vec4 vColor;
   
-  const vec3 lightPos = vec3(1.0,1.0,1.0);
-  const vec3 ambientColor = vec3(0.1, 0.1, 0.1);
-  const vec3 diffuseColor = vec3(0.5, 0.1, 0.1);
-  const vec3 specColor = vec3(1.0, 1.0, 1.0);
+  uniform vec3 uLightPos;
+  uniform vec3 uAmbientColor;
+  uniform vec3 uDiffuseColor;
+  uniform vec3 uSpecColor;
+
+  uniform float uAmbientCons;
+  uniform float uDiffuseCons;
+  uniform float uSpecCons;
+  uniform float uShineCons;
 
   uniform bool uShading;
 
 	void main(void) {
     if (uShading){
       vec3 normal = normalize(normalInterp);
-      vec3 lightDir = normalize(lightPos - vertPos);
+      vec3 lightDir = normalize(uLightPos - vertPos);
       vec3 reflectDir = reflect(-lightDir, normal);
       vec3 viewDir = normalize(-vertPos);
 
@@ -350,10 +352,14 @@ function main(jsonObj) {
 
       if(lambertian > 0.0) {
         float specAngle = max(dot(reflectDir, viewDir), 0.0);
-        specular = pow(specAngle, 15.0);
+        specular = pow(specAngle, uShineCons);
       }
 
-      gl_FragColor = vec4(ambientColor + lambertian*diffuseColor + specular*specColor, 1.0);
+      gl_FragColor = vec4(
+        uAmbientCons * uAmbientColor + 
+        uDiffuseCons * lambertian * uDiffuseColor + 
+        uSpecCons * specular * uSpecColor, 1.0
+      );
 
     }else{
       gl_FragColor = vColor;
@@ -463,8 +469,36 @@ function drawObject(gl, program, jsonObj, projectionMatrix) {
 	gl.uniformMatrix4fv(uModelViewMatrix, false, modelViewMatrix);
 
   var uShading = gl.getUniformLocation(program, "uShading");
-  gl.uniform1i(uShading, shading_check.checked)
+  gl.uniform1i(uShading, shading_check.checked);
   
+  //Light Position
+  var uLightPos = gl.getUniformLocation(program, "uLightPos");
+  gl.uniform3fv(uLightPos, [lx,ly,lz])
+  
+  // Ambient Color
+  var uAmbientColor = gl.getUniformLocation(program, "uAmbientColor");
+  gl.uniform3fv(uAmbientColor, aColor);
+  // Diffuse Color
+  var uDiffuseColor = gl.getUniformLocation(program, "uDiffuseColor");
+  gl.uniform3fv(uDiffuseColor, dColor);
+  // Specular Color
+  var uSpecColor = gl.getUniformLocation(program, "uSpecColor");
+  gl.uniform3fv(uSpecColor, sColor);
+  
+  // Ambient Constant
+  var uAmbientCons = gl.getUniformLocation(program, "uAmbientCons");
+  gl.uniform1f(uAmbientCons, ar);
+  // Diffuse Constant
+  var uDiffuseCons = gl.getUniformLocation(program, "uDiffuseCons");
+  gl.uniform1f(uDiffuseCons, dr);
+  // Specular Constant
+  var uSpecCons = gl.getUniformLocation(program, "uSpecCons");
+  gl.uniform1f(uSpecCons, sr);
+
+  // Shininess Constant
+  var uShineCons = gl.getUniformLocation(program, "uShineCons");
+  gl.uniform1f(uShineCons, sh);
+
   const uNormalMatrix = gl.getUniformLocation(program, "uNormalMatrix");
   var normalModelViewMatrix = transpose(inverse(modelViewMatrix));
   gl.uniformMatrix4fv(uNormalMatrix, false, normalModelViewMatrix);

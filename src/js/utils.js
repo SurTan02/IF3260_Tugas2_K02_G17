@@ -3,6 +3,16 @@ const m4 = () => {
 	return matrix;
 };
 
+const hexToRgb = (hex) => {
+	// Mengubah format hex color menjadi RGB
+	var r = parseInt(hex.substring(1, 3), 16) / 255;
+	var g = parseInt(hex.substring(3, 5), 16) / 255;
+	var b = parseInt(hex.substring(5, 7), 16) / 255;
+	
+	// Mengembalikan nilai RGB dengan skala 0 hingga 1 untuk setiap elemennya
+	return [r, g, b];
+}
+
 const orthographic = (left, right, bottom, top, near, far) => {
 	return [
 		2 / (right - left),
