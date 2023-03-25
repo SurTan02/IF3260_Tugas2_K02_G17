@@ -50,6 +50,13 @@ Website ini menyediakan fitur sebagai berikut.
 9. Help <br>
    Panduan dalam menjalankan website
    <br>
+10. Animation (Fitur bonus) <br>
+   Dengan mengklik fitur ini, object akan secara otomatis berotasi pada sumbu x.
+   <br>
+11. Save Model (Fitur bonus) <br>
+   Dengan mengklik fitur ini, website akan menyimpan model yang sedang ada di canvas.
+   <br>
+
 
 ## Authors
 

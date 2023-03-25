@@ -73,6 +73,18 @@ slider_zc.oninput = function () {
 };
 
 loader.onchange = function (e) {
+	tx = 0;
+	ty = 0;
+	tz = 0;
+	rx = 5.78;
+	ry = 3.8;
+	rz = 0;
+	sx = 1;
+	sy = 1;
+	sz = 1;
+	yc = 0;
+	zc = 1;
+	
 	var file = e.target.files[0];
 	if (!file) {
 		console.log("FILE NOT FOUND");
@@ -90,8 +102,8 @@ resetCamera.onclick = function (e) {
 	tx = 0;
 	ty = 0;
 	tz = 0;
-	rx = 0;
-	ry = 0;
+	rx = 5.78;
+	ry = 3.8;
 	rz = 0;
 	sx = 1;
 	sy = 1;

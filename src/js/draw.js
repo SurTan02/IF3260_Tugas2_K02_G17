@@ -370,7 +370,7 @@ function drawObject(gl, program, jsonObj, projectionMatrix) {
 	
 	// ANIMASI
 	if(animation_check.checked){
-		rx >= 360 ? rx = 0 : rx += 0.5
+		rx >= 360 ? rx = 0 : rx = parseFloat(rx) + 0.5
 		slider_rx.value = rx;
 	}
 
@@ -460,6 +460,7 @@ function loadObject(gl, vertices, indices, color) {
 	const colorBuffer = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(color), gl.STATIC_DRAW);
+	
 
 	return {
 		position: vertexBuffer,
