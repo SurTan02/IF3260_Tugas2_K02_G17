@@ -21,11 +21,13 @@
 				<h1 style="text-align: center;">3D WebGL</br>
                     <i class="fa fa-snapchat-ghost" aria-hidden="true"></i>Hollow Object
                 </h1>
+                <h2>Load Object</h2>
+                <input id="load" type="file" accept=".json"><br>
                 
                 <h2>Description</h2>
                 <p style="font-size: 14px;">Website yang dapat menampilkan 3D object dan melakukan modifikasi objek maupun view.</p>
                 <h2>Help</h2>
-                <div style="font-size: 13px;">
+                <div style="font-size: 12px;">
                     <p>1. <strong>Load Object 3d.</strong>Choose file pada "Let'sStart". Terdapat 3 hollow object yang disediakan pada folder test.</p>
                     <p>2. <strong>Fitur proyeksi.</strong> Saat awal gambar di load, gambar diproyeksi menggunakan (PERSPECTIVE). Terdapat radio button yang dapat diklik untuk mengubah jenis proyeksi</p>
                     <p>3. <strong>Fitur translasi.</strong> Terdapat 3 slider untuk translasi objek, masing-masing untuk sumbu x, y, dan z. </p>
@@ -37,10 +39,11 @@
                     <p>9. <strong>Fitur Shading</strong> Shading dapat di enable dan disable dengan radio button Shader enabled.
                                 <br>Terdapat beberapa Shader Control di bagian bawah.
                                     Dapat dilakukan perubahan pada konstanta refleksi, warna refleksi, shininess, dan letak sumber cahaya</p>
+                    <p>10. <strong>Fitur animation.</strong> Jika tombol ini ditekan, objek akan secara otomatis berotasi pada sumbu x.</p>
+                    <p>11. <strong>Fitur save model.</strong> Dengan mengklik fitur ini, website akan menyimpan model yang sedang ada di canvas. </p>
                     
                 </div>
-                <h2>Let's Start</h2>
-                <input id="load" type="file" accept=".json"><br><br>
+
 			</div>
             <canvas id="canvas" width="1280px" height="720px"></canvas>
 			<!-- <canvas id="canvas"></canvas> -->
@@ -61,17 +64,17 @@
 					<span class="control-label">Projection</span>
 					<form class ="input-container" id="projection-option">
                         <label>
-                          <input type="radio" name="projection-option" value="perspective" checked>
+                          <input type="radio" name="projection-option" value="perspective" id="perspective" checked>
                           Perspective
                         </label>
                         <br>
                         <label>
-                          <input type="radio" name="projection-option" value="orthographic">
+                          <input type="radio" name="projection-option" value="orthographic" id="orthographic">
                           Orthographic
                         </label>
                         <br>
                         <label>
-                          <input type="radio" name="projection-option" value="oblique">
+                          <input type="radio" name="projection-option" value="oblique" id="oblique">
                           Oblique
                         </label>
                       </form>
@@ -161,6 +164,7 @@
                     <br><input type="button" class="resetbutton" id="resetbutton" name="resetbutton" value="Reset Default View" >
                     <input type="button" class="savebutton" id="savebutton" name="savebutton" value="Save Model" >
                 </div>
+                <br>
 			</div>		
 		</main>
 	</body>

@@ -47,9 +47,9 @@ var lx = 1.0;
 var ly = 1.0;
 var lz = 1.0;
 
-var aColor = [1,0,0];
-var dColor = [0,1,0];
-var sColor = [0,0,1];
+var aColor = [1, 0, 0];
+var dColor = [0, 1, 0];
+var sColor = [0, 0, 1];
 
 slider_tx.oninput = function () {
 	tx = this.value;
@@ -64,15 +64,15 @@ slider_tz.oninput = function () {
 };
 
 slider_rx.oninput = function () {
-	rx = this.value	
+	rx = this.value;
 };
 
 slider_ry.oninput = function () {
-	ry = this.value
+	ry = this.value;
 };
 
 slider_rz.oninput = function () {
-	rz =  this.value
+	rz = this.value;
 };
 
 slider_sx.oninput = function () {
@@ -117,29 +117,19 @@ slider_lz.oninput = function () {
 	lz = this.value;
 };
 
-color_picker_ar.oninput = function() {
-	aColor = hexToRgb(this.value); 
-}
-color_picker_dr.oninput = function() {
-	dColor = hexToRgb(this.value); 
-}
-color_picker_sr.oninput = function() {
-	sColor = hexToRgb(this.value); 
-}
+color_picker_ar.oninput = function () {
+	aColor = hexToRgb(this.value);
+};
+color_picker_dr.oninput = function () {
+	dColor = hexToRgb(this.value);
+};
+color_picker_sr.oninput = function () {
+	sColor = hexToRgb(this.value);
+};
 
 loader.onchange = function (e) {
-	tx = 0;
-	ty = 0;
-	tz = 0;
-	rx = 5.78;
-	ry = 3.8;
-	rz = 0;
-	sx = 1;
-	sy = 1;
-	sz = 1;
-	yc = 0;
-	zc = 1;
-	
+	resetValue();
+
 	var file = e.target.files[0];
 	if (!file) {
 		console.log("FILE NOT FOUND");
@@ -154,6 +144,10 @@ loader.onchange = function (e) {
 };
 
 resetCamera.onclick = function (e) {
+	resetValue();
+};
+
+function resetValue() {
 	tx = 0;
 	ty = 0;
 	tz = 0;
@@ -165,6 +159,17 @@ resetCamera.onclick = function (e) {
 	sz = 1;
 	yc = 0;
 	zc = 1;
+	ar = 1.0;
+	dr = 1.0;
+	sr = 1.0;
+	sh = 0.0;
+	lx = 1.0;
+	ly = 1.0;
+	lz = 1.0;
+
+	aColor = [1, 0, 0];
+	dColor = [0, 1, 0];
+	sColor = [0, 0, 1];
 
 	slider_tx.value = tx;
 	slider_ty.value = ty;
@@ -177,9 +182,26 @@ resetCamera.onclick = function (e) {
 	slider_rz.value = rz;
 	slider_yc.value = yc;
 	slider_zc.value = zc;
-};
+	slider_ar.value = ar;
+	slider_dr.value = dr;
+	slider_sr.value = sr;
+	slider_sh.value = sh;
+	slider_lx.value = lx;
+	slider_ly.value = ly;
+	slider_lz.value = lz;
+	color_picker_ar.value = "#ff0000";
+	color_picker_dr.value = "#00ff00";
+	color_picker_sr.value = "#0000ff";
+	projection_opt.value = "perspective";
+	const selectedProjection = document.getElementById("perspective");
+	selectedProjection.checked = true;
+	shading_check.checked = false;
+	animation_check.checked = false;
+}
 
-projection_opt.onchange = function(){
-	const selectedProjection = document.querySelector('input[name="projection-option"]:checked').value;
-	this.value = selectedProjection
+projection_opt.onchange = function () {
+	const selectedProjection = document.querySelector(
+		'input[name="projection-option"]:checked'
+	).value;
+	this.value = selectedProjection;
 };
